@@ -6,7 +6,7 @@ export interface PokemonResumo {
     peso: number;
 }
 
-interface PokemonApiResponse {
+export interface PokemonApiResponse {
     id: number;
     name: string;
     height: number;
