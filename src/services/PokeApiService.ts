@@ -1,20 +1,22 @@
 import type { PokemonResumo, PokemonApiResponse } from "../models/pokemon.js";
 import { CatalogoPokemon } from "../repositories/PokemonRepositorie.js";
+import { APIError } from "../models/CustomErrors.js";
 
 export async function buscarPokemon(nomeOuId: string): Promise<PokemonResumo | null> {
   const parametro = nomeOuId.trim().toLowerCase();
 
   if (!parametro) {
-    console.error("Nome ou ID inválido.");
-    return null;
+    throw new APIError("Nome ou ID inválido.", 400);
   }
 
   try {
     const resposta = await fetch(`https://pokeapi.co/api/v2/pokemon/${parametro}`);
 
     if (!resposta.ok) {
-      console.error(`Pokémon ${parametro} não foi encontrado.`);
-      return null;
+      if(resposta.status === 404){
+      throw new APIError(`Pokémon ${parametro} não foi encontrado.`, 404);
+    }
+      throw new APIError("Falha na comunicação com a PokéAPI.", resposta.status);
     }
 
     const data = (await resposta.json()) as PokemonApiResponse;
@@ -30,8 +32,8 @@ export async function buscarPokemon(nomeOuId: string): Promise<PokemonResumo | n
     return pokemonEncontrado;
 
   } catch (error) {
-    console.error("[ERRO] Falha ao conectar com a API.", error);
-    return null;
+
+    throw new APIError("[ERRO] Falha ao conectar com a API.", 500);
   }
 }
 
