@@ -1,5 +1,5 @@
-import { type } from "node:os";
 import type { PokemonResumo, PokemonApiResponse } from "../models/pokemon.js";
+import { CatalogoPokemon } from "../repositories/PokemonRepositorie.js";
 
 export async function buscarPokemon(nomeOuId: string): Promise<PokemonResumo | null> {
   const parametro = nomeOuId.trim().toLowerCase();
@@ -36,15 +36,16 @@ export async function buscarPokemon(nomeOuId: string): Promise<PokemonResumo | n
 }
 
 export function listarCatalogo(catalogo: PokemonResumo[]): void {
-    if(catalogo.length > 0){
-        console.log("\n ===CATÁLOGO ATUAL ===");
+    const listagem = new CatalogoPokemon;
 
-        catalogo.forEach((p) => {
-            console.log(`${p.id} - ${p.nome} | Tipos: ${p.tipos} 
-                | Altura: ${p.altura} | Peso: ${p.peso}`);
-        })
-        
-    } else {
-        console.log("[AVISO] Catálogo vazio.");
-    }
+    listagem.listar();
+}
+
+export function removerDoCatalogo( catalogo: PokemonResumo[], id: number): PokemonResumo[]{
+    const removerPokemon = new CatalogoPokemon;
+
+    removerPokemon.remover(id);
+
+    return catalogo;
+
 }
