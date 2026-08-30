@@ -23,8 +23,7 @@ export class CatalogoPokemon {
         console.log("\n ===CATÁLOGO ATUAL ===");
 
             this.pokemons.forEach((p) => {
-                console.log(`${p.id} - ${p.nome} | Tipos: ${p.tipos} 
-                    | Altura: ${p.altura} | Peso: ${p.peso}`);
+                console.log(`${p.id} - ${p.nome} | Tipos: ${p.tipos.join(", ")} | Altura: ${p.altura} | Peso: ${p.peso}`);
             })
 
         } else {
